@@ -1,23 +1,17 @@
 package pack;
 
 public class Writer extends Thread {
-	private String writeThread;
-	// instance of lock class
-	private final ReadWriteLock lock;
+	private String threadName;
+	private FileEditor fileEditor;
+	
 
-	public Writer(ReadWriteLock lock) {
-		// give same version of class to all threads
-		this.lock = lock;
+	public Writer(String name, FileEditor fe){
+		fileEditor = fe;
+		//give same version of class to all threads
+		threadName = name;
 	}
 
 	public void run() {
-		try {
-			// calls lock with value 3
-			for (int i = 0; i <= 10; i++) {
-				lock.writer(i);
-			}
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+		fileEditor.writeFile(threadName);
 	}
 }

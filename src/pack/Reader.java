@@ -1,26 +1,17 @@
 package pack;
 
 public class Reader extends Thread{
-	private String readThread;
-	private final ReadWriteLock lock;
+	private String threadName;
+	private FileEditor fileEditor;
 	
-//	Reader(String name){
-//		readThread = name; //allow to create instance of thread
-//	}
-	public Reader(ReadWriteLock lock){
+	public Reader(String name, FileEditor fe){
+		fileEditor = fe;
 		//give same version of class to all threads
-		this.lock = lock;
+		threadName = name;
 	}
 	
 	public void run(){
-		try {
-			//calls lock with value 3
-			for (int i = 0; i <= 10; i++) {
-				lock.reader();
-			}
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+		fileEditor.readFile(threadName);
 	}
 	
 	
