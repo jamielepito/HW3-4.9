@@ -4,15 +4,17 @@ public class ReadWriteLock {
 	private int readHold = 0; // tell number readers holding
 	private int writeHold = 0; // tell number writers hold
 	private int numbers = 0;
+	private int writeWait = 0;
 
 
 	public synchronized void writeLock(String threadName) throws InterruptedException {
 		
 		while (readHold > 0 || writeHold > 0) {
 			System.out.println("writer " + threadName + " tries to acquire lock, cannot, waits");
+			writeWait++;
 			wait(); // waits when object in use
-
 		}
+		writeWait--;
 		writeHold++; // inc writers holds
 		System.out.println("writer " + threadName + " is writing");
 
@@ -20,14 +22,10 @@ public class ReadWriteLock {
 
 	public synchronized void readLock(String threadName) throws InterruptedException {
 		//readHold++;
-			while (writeHold > 0) {
+			while (writeHold > 0 || writeWait > 0) {
 				System.out.println("reader " + threadName + " tries to acquire lock, cannot, waits");
 				wait(); // waits when writer using
 			}
-//			while (numbers <= 0){
-//				System.out.println("file is empty so reader " + threadName + " waits");
-//				wait();
-//			}
 			readHold++;
 			System.out.println("reader " + threadName + " is reading");
 
