@@ -3,7 +3,6 @@ package pack;
 public class ReadWriteLock {
 	private int readHold = 0; // tell number readers holding
 	private int writeHold = 0; // tell number writers hold
-	private int numbers = 0;
 	private int writeWait = 0;
 
 
@@ -32,14 +31,12 @@ public class ReadWriteLock {
 	}
 	public synchronized void writeUnlock(String threadName){
 		writeHold--;
-		numbers++;
 		System.out.println("writer " + threadName + " is done");
 		notifyAll(); // wake up when available to use
 	}
 	
 	public synchronized void readUnlock(String threadName){
 		readHold--;
-		numbers--;
 		System.out.println("reader " + threadName + " is done");
 
 		if (readHold == 0) {
