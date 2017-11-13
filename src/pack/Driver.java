@@ -26,6 +26,18 @@ public class Driver {
 		write3.start();
 		read5.start();
 		
+		write.join();
+		read.join();
+		read1.join();
+		write1.join();
+		read2.join();
+		write2.join();
+		read3.join();
+		read4.join();
+		write3.join();
+		read5.join();
+		
+		
 	}
 
 
